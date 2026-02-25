@@ -1,31 +1,26 @@
 <?php
 
-    echo "dostal jsem:".$_POST['uname']."<br>";
-    echo "dostal jsem:".$_POST['psw']."<br>";
-    session_start();
-    if($_POST["uname"] == "admin" && $_POST["psw"] == "admin"){
-        $_SESSION["uname"] = $_POST["uname"];
-        $_SESSION["psw"] = $_POST["psw"];
-    }
+    include("databaze.php");
 
-    if (isset($_SESSION["uname"])){
-        $pass = $_SESSION["psw"];
-        $user = $_SESSION["uname"];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        echo "uzivatel $user a heslo $pass";
+        $uname = $_POST["uname"];
+        $psw = $_POST["psw"];
 
-        echo ' <form action="" method="get">
-            <input type="submit" name="logout" value="odhlasit se">
-        </form>';
+        $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$uname]);
 
-        echo isset($_GET["logout"]) ? "odhlasit":"neodhlasit";
-        if(isset($_GET["logout"])){
-            session_unset();
-            session_destroy();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && $user["password"] == $psw) {
+            
+            $_SESSION["user"] = $user["username"];
+            header("Location: users.php");
+            exit();
+
+        }else{
+            echo "uzivatel neni prihlasen";
         }
     }
-    else{
-        echo "uzivatel neni prihlasen";
-    }
-    //ahoj
+
 ?>
