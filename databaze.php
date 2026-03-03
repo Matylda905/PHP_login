@@ -14,6 +14,27 @@ catch (PDOException $e) {
     //exit();
 }
 
+function ja ($uname, $psw){
+
+    global $db;
+
+        $sql = "SELECT username, psw FROM userdata WHERE username =:username";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([':username' => $uname]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && $user["psw"] == $psw) {
+            
+            $_SESSION["user"] = $user["username"];
+            header("Location: users.php");
+            exit();
+
+        }else{
+            echo "uzivatel neni prihlasen";
+        }
+}
+
 /*function getAll($table) {
     global $db;
     $sql = "SELECT * FROM $table";
