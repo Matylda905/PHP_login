@@ -38,17 +38,17 @@
     <form method="post" action="document-edit.php">
         <label for="filename">Zadejte název souboru:</label><br>
         <input type="text" id="filename" name="filename" required><br>
-        <input type="submit" value="Next">
+        <input type="submit" value="Další">
     </form>
     <?php endif; ?>
     
     <?php if (!empty($filename)): ?>
     <form method="post" action="document-edit.php">
         <input type="hidden" name="filename" value="<?php echo htmlspecialchars($filename); ?>">
-        <label for="content"><?php echo $fileExists ? 'Edit' : 'Create'; ?> Content:</label><br>
+        <label for="content"><?php echo $fileExists ? 'Editovat' : 'Vytvořit'; ?> Content:</label><br>
         <textarea id="content" name="content" rows="10" cols="50"><?php echo htmlspecialchars($content); ?></textarea><br>
-        <input type="submit" value="Save">
-        <input type="button" value="Back" onclick="location.href='document-edit.php'">
+        <input type="submit" value="Uložit">
+        <input type="button" value="Zpět" onclick="location.href='document-edit.php'">
     </form>
     <?php endif; ?>
 </body>
